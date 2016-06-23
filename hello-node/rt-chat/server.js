@@ -66,3 +66,9 @@ var server = http.createServer(function (request, response){
 server.listen(3333,function(){
 	console.log("Server listening on port 3333");
 });
+
+/*
+ * Socket IO Server
+ */
+var chatServer = require('./lib/chat_server');
+chatServer.listen(server);
