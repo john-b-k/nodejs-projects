@@ -11,13 +11,11 @@ channel.on('join',function(id, client){
     this.clients[id] = client;
     this.subscriptions[id] = function(senderId, message){
         
+        if(id != senderId){
+            console.log(id +'    '+senderId+'    '+ message);
+            this.clients[id].write(message);
+        }
         
-        //    if(id != senderId){
-                console.log(id +'    '+senderId+'    '+ message);
-                this.clients[id].write(message);
-      //      }
-         
-      
     }
     this.on('broadcast',this.subscriptions[id]);
 });
@@ -25,7 +23,6 @@ channel.on('join',function(id, client){
 var server = net.createServer(function(client){
     var id = client.remoteAddress+':'+client.remotePort;
     
-    console.log(id+ ' is connected!');
     channel.emit('join',id,client);
     
     client.on('data',function(data){
@@ -35,4 +32,6 @@ var server = net.createServer(function(client){
     });
 });
 
-server.listen(8888);
+server.listen(8888,function(){
+    console.log('Server Running!');
+});
